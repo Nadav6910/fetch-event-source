@@ -2,7 +2,7 @@ import { EventSourceMessage, getBytes, getLines, getMessages } from './parse';
 
 export const EventStreamContentType = 'text/event-stream';
 
-const DefaultRetryInterval = 1000;
+// const DefaultRetryInterval = 1000;
 const LastEventId = 'last-event-id';
 
 export interface FetchEventSourceInit extends RequestInit {
@@ -49,6 +49,8 @@ export interface FetchEventSourceInit extends RequestInit {
      */
     openWhenHidden?: boolean;
 
+    retryInterval: number
+
     /** The Fetch function to use. Defaults to window.fetch */
     fetch?: typeof fetch;
 }
@@ -61,6 +63,7 @@ export function fetchEventSource(input: RequestInfo, {
     onclose,
     onerror,
     openWhenHidden,
+    retryInterval,
     fetch: inputFetch,
     ...rest
 }: FetchEventSourceInit) {
@@ -83,7 +86,7 @@ export function fetchEventSource(input: RequestInfo, {
             document.addEventListener('visibilitychange', onVisibilityChange);
         }
 
-        let retryInterval = DefaultRetryInterval;
+        // let retryInterval = retryInterval;
         let retryTimer = 0;
         function dispose() {
             document.removeEventListener('visibilitychange', onVisibilityChange);
